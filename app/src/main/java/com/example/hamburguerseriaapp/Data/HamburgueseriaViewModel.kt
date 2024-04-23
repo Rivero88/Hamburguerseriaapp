@@ -26,18 +26,17 @@ class HamburgueseriaViewModel: ViewModel() {
     }
 
     fun eliminarProductoDelPedido (producto: Producto){
-
-        var pedidoActual = _uiState.value.pedidoActual
-
-        for(prod in pedidoActual.productos){
-            if (prod.nombre.equals(producto.nombre)){
-                prod.cantidad -= 1
-                pedidoActual.precioPedidoTotal -= prod.precio
+        _uiState.update { uiState ->
+            var productos = uiState.pedidoActual.productos
+            var precioPedidoTotal = uiState.pedidoActual.precioPedidoTotal
+            for(prod in productos){
+                if (prod.nombre.equals(producto.nombre)){
+                    prod.cantidad -= 1
+                    precioPedidoTotal -= prod.precio
+                }
             }
-        }
-        _uiState.update {
-                actualizacionPedido -> actualizacionPedido.copy(
-            pedidoActual = pedidoActual
+            uiState.copy(
+                pedidoActual = Pedido(productos, precioPedidoTotal)
             )
         }
     }
