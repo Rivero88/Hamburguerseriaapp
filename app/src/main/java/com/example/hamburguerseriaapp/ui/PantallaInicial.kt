@@ -122,7 +122,7 @@ private fun VentanaProductos(productos: ArrayList<Producto>, viewModel: Hamburgu
                     .fillMaxWidth()
                     .background(Color.Cyan))
                 Column (){
-                    Button(onClick = { viewModel.anadirAPedido() }) {
+                    Button(onClick = { viewModel.anadirAPedido(producto) }) {
                         Text(text ="Añadir a pedido")
                     }
 

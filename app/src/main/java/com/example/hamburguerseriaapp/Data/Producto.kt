@@ -6,6 +6,7 @@ data class Producto (
     @DrawableRes var imagen: Int,
     var nombre: String,
     var precio: Int,
+    var cantidad: Int,
     var ingredientes: ArrayList<Ingrediente>
 ){
     /**

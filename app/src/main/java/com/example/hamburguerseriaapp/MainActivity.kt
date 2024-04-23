@@ -65,7 +65,8 @@ fun Principal(navController: NavHostController = rememberNavController(), produc
 
         }
         composable(route = PrincipalScreen.PantallaPedidoActual.name) {
-            PantallaPedidoActual { navController.navigate(PrincipalScreen.PantallaPrincipal.name) }
+            PantallaPedidoActual( onClickCambiarPantallaPedidoActual = { navController.navigate(PrincipalScreen.PantallaPrincipal.name) }, uiState = uiState,
+                viewModel = viewModelHamburgueseria)
         }
         composable(route = PrincipalScreen.PantallaHistoricoPedidos.name) {
             PantallaPedidosHistoricos { navController.navigate(PrincipalScreen.PantallaPrincipal.name) }

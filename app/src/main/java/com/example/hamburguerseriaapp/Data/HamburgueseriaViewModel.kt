@@ -12,13 +12,32 @@ class HamburgueseriaViewModel: ViewModel() {
     val uiState: StateFlow<HamburgueseriaUIState> = _uiState.asStateFlow()
 
     fun anadirAPedido(producto: Producto){
-
-        var pedidoActual: Pedido = _uiState.value.listadoDelPedido
-        pedidoActual.productos.add(ProductosPedidos(producto, 1))
-
+         for(prod in _uiState.value.pedidoActual.productos){
+            if(prod.nombre.equals(producto.nombre)){
+                prod.cantidad += 1
+                _uiState.value.pedidoActual.precioPedidoTotal += prod.precio
+            }
+        }
         _uiState.update {
             actualizacionPedido -> actualizacionPedido.copy(
-                //listadoDelPedido = Pedido(pedidoActual.productos,)
+            pedidoActual = _uiState.value.pedidoActual
+            )
+        }
+    }
+
+    fun eliminarProductoDelPedido (producto: Producto){
+
+        var pedidoActual = _uiState.value.pedidoActual
+
+        for(prod in pedidoActual.productos){
+            if (prod.nombre.equals(producto.nombre)){
+                prod.cantidad -= 1
+                pedidoActual.precioPedidoTotal -= prod.precio
+            }
+        }
+        _uiState.update {
+                actualizacionPedido -> actualizacionPedido.copy(
+            pedidoActual = pedidoActual
             )
         }
     }
