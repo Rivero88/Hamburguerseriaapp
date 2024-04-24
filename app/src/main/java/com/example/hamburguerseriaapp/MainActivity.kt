@@ -17,7 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hamburguerseriaapp.Data.DataSource
+import com.example.hamburguerseriaapp.Data.DataSourcePedidos
 import com.example.hamburguerseriaapp.Data.HamburgueseriaViewModel
+import com.example.hamburguerseriaapp.Data.Pedido
 import com.example.hamburguerseriaapp.Data.Producto
 import com.example.hamburguerseriaapp.ui.PantallaInicial
 import com.example.hamburguerseriaapp.ui.PantallaPedidoActual
@@ -34,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Principal(productos = DataSource.productos)
+                    Principal(productos = DataSource.productos, pedidosHistorico = DataSourcePedidos.pedidos)
                 }
             }
         }
@@ -48,10 +50,11 @@ enum class PrincipalScreen(@StringRes val title: Int) {
 }
 
 @Composable
-fun Principal(navController: NavHostController = rememberNavController(), productos: ArrayList<Producto>) {
+fun Principal(navController: NavHostController = rememberNavController(), productos: ArrayList<Producto>,
+              pedidosHistorico: ArrayList<Pedido>) {
    val viewModelHamburgueseria: HamburgueseriaViewModel = viewModel()
    val uiState by viewModelHamburgueseria.uiState.collectAsState()
-
+    uiState.historicoPedidos = pedidosHistorico
     NavHost(
         navController = navController,
         startDestination = PrincipalScreen.PantallaPrincipal.name,
@@ -61,15 +64,20 @@ fun Principal(navController: NavHostController = rememberNavController(), produc
             PantallaInicial(
                 onClickCambiarPantallaPedidoActual = { navController.navigate(PrincipalScreen.PantallaPedidoActual.name) },
                 onClickCambiarPantallaPedidoHistorico = { navController.navigate(PrincipalScreen.PantallaHistoricoPedidos.name) },
-                productos=productos, viewModelHamburgueseria)
+                productos=productos, viewModel = viewModelHamburgueseria)
 
         }
         composable(route = PrincipalScreen.PantallaPedidoActual.name) {
             PantallaPedidoActual( onClickCambiarPantallaPedidoActual = { navController.navigate(PrincipalScreen.PantallaPrincipal.name) }, uiState = uiState,
+                onClickCambiarPantallaPedidoHistorico = { navController.navigate(PrincipalScreen.PantallaHistoricoPedidos.name) },
+                onClickCambiarPantallaPrincipal = { navController.navigate(PrincipalScreen.PantallaPrincipal.name) },
                 viewModel = viewModelHamburgueseria)
         }
         composable(route = PrincipalScreen.PantallaHistoricoPedidos.name) {
-            PantallaPedidosHistoricos { navController.navigate(PrincipalScreen.PantallaPrincipal.name) }
+            PantallaPedidosHistoricos (
+                onClickCambiarPantallaPedidoHistorico={ navController.navigate(PrincipalScreen.PantallaPrincipal.name) },
+                onClickCambiarPantallaPrincipal = { navController.navigate(PrincipalScreen.PantallaPrincipal.name) },
+                pedidosHistorico=uiState.historicoPedidos)
         }
     }
 }

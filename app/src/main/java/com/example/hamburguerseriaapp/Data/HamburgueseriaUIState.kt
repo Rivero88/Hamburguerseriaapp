@@ -13,5 +13,6 @@ data class HamburgueseriaUIState(
                 Producto(R.drawable.hamburguesa_mini,"Mini", 2, 0, arrayListOf(Ingrediente("Mini-carne de ternera"), Ingrediente("queso"), Ingrediente("lechuga"), Ingrediente("tomate"), Ingrediente("pepinillo"), Ingrediente("ketchup"))),
                 Producto(R.drawable.hamburguesa_pescado,"Pescado", 9, 0, arrayListOf(Ingrediente("Filete pescado"), Ingrediente("lechuga"), Ingrediente("tomate"), Ingrediente("mayonesa")))
             ), 0
-        )
+        ),
+    var historicoPedidos: ArrayList<Pedido> = ArrayList()
 )

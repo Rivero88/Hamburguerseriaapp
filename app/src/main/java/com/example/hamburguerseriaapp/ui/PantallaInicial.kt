@@ -43,27 +43,24 @@ private fun MyDialog(onClose: () -> Unit, producto: Producto, mostrarDialogo:Boo
                 onClose.invoke()
             },
             title = { Text("Ingredientes",
-                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold)},
             text = { Text("${producto.toString()}",
-                textAlign = TextAlign.Center,
-                fontSize = 10.5.sp,
+                textAlign = TextAlign.Left,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold) },
             confirmButton = {
-                Button(
-                    onClick = {
-                        onClose.invoke()
-                    }, modifier = Modifier
+                Button(onClick = {onClose.invoke()},
+                    modifier = Modifier.fillMaxWidth(1f)
                 ) {
                     Text("Aceptar")
                 }
             },
             dismissButton = {
-                Button(
-                    onClick = {
-                        onClose.invoke()
-                    }
-                ) {
+                Button(onClick = {onClose.invoke()},
+                    modifier = Modifier.fillMaxWidth(1f)
+                    ) {
                     Text("Cancelar")
                 }
             }
@@ -80,16 +77,19 @@ fun PantallaInicial(onClickCambiarPantallaPedidoActual: () -> Unit, onClickCambi
             .height(50.dp)
             .fillMaxWidth()
             .padding(8.dp)
-            .background(Color.Yellow))
+            .background(Color.Yellow),
+            fontWeight = FontWeight.Bold)
         VentanaProductos(productos = productos, viewModel)
         Row (modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)){
-            Button(onClick = { onClickCambiarPantallaPedidoActual.invoke() }) {
+            Button(onClick = { onClickCambiarPantallaPedidoActual.invoke() },
+                Modifier.weight(0.5f)) {
                 Text(text = "Pedido actual")
             }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = { onClickCambiarPantallaPedidoHistorico.invoke() }) {
+            Button(onClick = { onClickCambiarPantallaPedidoHistorico.invoke() },
+                Modifier.weight(0.5f)) {
                 Text(text = "Histórico pedidos")
             }
         }
@@ -111,20 +111,24 @@ private fun VentanaProductos(productos: ArrayList<Producto>, viewModel: Hamburgu
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .height(50.dp)
+                        .height(60.dp)
                         .width(250.dp))
                 Text(text = "Nombre: ${producto.nombre}", modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Yellow))
+                    .background(Color.Yellow),
+                    fontWeight = FontWeight.SemiBold
+                )
                 Text(text = "Precio: ${producto.precio} €", modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Cyan))
-                Column (){
-                    Button(onClick = { viewModel.anadirAPedido(producto) }) {
+                    .background(Color.Cyan),
+                    fontWeight = FontWeight.SemiBold)
+                Column (modifier = Modifier){
+                    Button(onClick = { viewModel.anadirAPedido(producto) },
+                        Modifier.fillMaxWidth()) {
                         Text(text ="Añadir a pedido")
                     }
-
-                    Button(onClick = { mostrarDialogo=true }) {
+                    Button(onClick = { mostrarDialogo=true },
+                        Modifier.fillMaxWidth()) {
                         Text(text ="Ver ingredientes")
                     }
                     MyDialog (onClose = {mostrarDialogo=false},producto = producto, mostrarDialogo = mostrarDialogo)

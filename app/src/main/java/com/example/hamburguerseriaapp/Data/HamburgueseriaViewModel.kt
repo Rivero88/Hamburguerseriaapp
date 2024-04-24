@@ -1,6 +1,7 @@
 package com.example.hamburguerseriaapp.Data
 
 import androidx.lifecycle.ViewModel
+import com.example.hamburguerseriaapp.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,6 +39,25 @@ class HamburgueseriaViewModel: ViewModel() {
             uiState.copy(
                 pedidoActual = Pedido(productos, precioPedidoTotal)
             )
+        }
+    }
+
+    fun pagarYVaciarCarrito(){
+
+        val pedidoActualCopia = _uiState.value.pedidoActual.copy()
+
+        _uiState.value.historicoPedidos.add(pedidoActualCopia)
+
+        for(producto in _uiState.value.pedidoActual.productos){
+            producto.cantidad=0
+        }
+        _uiState.value.pedidoActual.precioPedidoTotal=0
+
+        _uiState.update {
+                actualizacionPedido -> actualizacionPedido.copy(
+            pedidoActual = _uiState.value.pedidoActual,
+            historicoPedidos = _uiState.value.historicoPedidos
+        )
         }
     }
 
